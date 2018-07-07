@@ -9,7 +9,6 @@ const Button = styled.div`
   align-items: center;
   justify-content: center;
   margin: 2px;
-  border-radius: 7px;
   ${props =>
     (props.active
       ? `
