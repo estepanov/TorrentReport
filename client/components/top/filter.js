@@ -130,6 +130,11 @@ const FilterOption = styled.div`
   margin: 0;
 `;
 
+const ResetLink = styled.a`
+  cursor: pointer;
+  text-decoration: underline;
+`;
+
 /**
  * COMPONENT
  */
@@ -161,8 +166,12 @@ class Filter extends React.Component {
           )}
           <StaticBarInfo>
             {`${this.props.count} Results `}
-            {this.props.numberOfPages > 0 &&
-              ` - Page ${this.props.currentPage} of ${this.props.numberOfPages}`}
+            {this.props.numberOfPages > 0 ?
+              ` - Page ${this.props.currentPage} of ${this.props.numberOfPages}` : <span> - try <ResetLink onClick={() => {
+                this.props.resetEverything();
+                this.props.onChangePage();
+              }}>clearing the filter</ResetLink></span>}
+
           </StaticBarInfo>
         </StaticBar>
         {this.props.topFilter.visibility && (

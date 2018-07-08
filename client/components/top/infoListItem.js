@@ -111,7 +111,7 @@ const InfoListItem = ({
         </Count>
         <Detail>
           <DetailName>Uploaded</DetailName>
-          <DetailValue>{moment(uploadDate).format(uploadedDateFormat)}</DetailValue>
+          <DetailValue>{moment(uploadDate).fromNow()}</DetailValue>
         </Detail>
         <Detail>
           <DetailName>User</DetailName>

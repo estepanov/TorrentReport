@@ -28,33 +28,33 @@ const PageButtonMaker = (props) => {
     numberOfPages, currentPage, changePageFunc, funcToCall,
   } = props;
   const pageButtons = [];
-  const firstShownPageButton = currentPage <= 4 ? 0 : currentPage - 4;
+  const firstShownPageButton = currentPage <= 3 ? 0 : currentPage - 3;
   let lastShownPageButton;
   if (currentPage + 4 >= numberOfPages) {
     lastShownPageButton = numberOfPages;
   } else if (currentPage <= 4) {
-    lastShownPageButton = 8;
+    lastShownPageButton = 6;
   } else {
     lastShownPageButton = currentPage + 4;
   }
 
   if (currentPage >= 1) {
     pageButtons.push(<PageButton
-        key={'pagination-previous-button'}
-        pageNumber={currentPage - 1}
-        buttonText="Previous"
-        changePageFunc={changePageFunc}
-        funcToCall={funcToCall}
-      />);
+      key={'pagination-previous-button'}
+      pageNumber={currentPage - 1}
+      buttonText="Previous"
+      changePageFunc={changePageFunc}
+      funcToCall={funcToCall}
+    />);
   }
 
   if (firstShownPageButton >= 1) {
     pageButtons.push(<PageButton
-        key={'pagination-first-button'}
-        pageNumber={0}
-        changePageFunc={changePageFunc}
-        funcToCall={funcToCall}
-      />);
+      key={'pagination-first-button'}
+      pageNumber={0}
+      changePageFunc={changePageFunc}
+      funcToCall={funcToCall}
+    />);
     if (firstShownPageButton > 1) {
       pageButtons.push(<Spacer key="pagination-first-spacer">...</Spacer>);
     }
@@ -62,12 +62,12 @@ const PageButtonMaker = (props) => {
 
   for (let x = firstShownPageButton; x < lastShownPageButton; x += 1) {
     pageButtons.push(<PageButton
-        key={`page-button-${x}`}
-        active={currentPage === x}
-        pageNumber={x}
-        changePageFunc={changePageFunc}
-        funcToCall={funcToCall}
-      />);
+      key={`page-button-${x}`}
+      active={currentPage === x}
+      pageNumber={x}
+      changePageFunc={changePageFunc}
+      funcToCall={funcToCall}
+    />);
   }
 
   if (lastShownPageButton < numberOfPages - 1) {
@@ -75,21 +75,21 @@ const PageButtonMaker = (props) => {
       pageButtons.push(<Spacer key="pagination-last-spacer">...</Spacer>);
     }
     pageButtons.push(<PageButton
-        key={'pagination-last-button'}
-        pageNumber={numberOfPages - 1}
-        changePageFunc={changePageFunc}
-        funcToCall={funcToCall}
-      />);
+      key={'pagination-last-button'}
+      pageNumber={numberOfPages - 1}
+      changePageFunc={changePageFunc}
+      funcToCall={funcToCall}
+    />);
   }
 
   if (currentPage !== numberOfPages - 1) {
     pageButtons.push(<PageButton
-        key={'pagination-next-button'}
-        pageNumber={currentPage + 1}
-        buttonText="Next"
-        changePageFunc={changePageFunc}
-        funcToCall={funcToCall}
-      />);
+      key={'pagination-next-button'}
+      pageNumber={currentPage + 1}
+      buttonText="Next"
+      changePageFunc={changePageFunc}
+      funcToCall={funcToCall}
+    />);
   }
   return <Pagination>{pageButtons}</Pagination>;
 };

@@ -13,7 +13,6 @@ import PageButtonMaker from '../components/pagination/pageButtonMaker';
 /**
  * STYLES
  */
-
 const PaginationContainer = styled.div`
   margin: 10px 0 10px 0;
 `;
@@ -21,7 +20,6 @@ const PaginationContainer = styled.div`
 /**
  *  COMPONENT
  */
-
 const filterSortSnapshots = (arraySnapshots, topFilter) =>
   arraySnapshots
     .filter((snapshot) => {
@@ -63,16 +61,16 @@ const TopNewSnapshots = (props) => {
   const pageButtons = [];
   for (let x = 0; x < numberOfPages; x += 1) {
     pageButtons.push(<div
-        className={
-          x === props.topFilter.currentPage
-            ? 'top-filter-pagination-link-active'
-            : 'top-filter-pagination-link'
-        }
-        key={`pagination${x}`}
-        onClick={() => props.changePage(x)}
-      >
-        {x + 1}
-      </div>);
+      className={
+        x === props.topFilter.currentPage
+          ? 'top-filter-pagination-link-active'
+          : 'top-filter-pagination-link'
+      }
+      key={`pagination${x}`}
+      onClick={() => props.changePage(x)}
+    >
+      {x + 1}
+    </div>);
   }
 
   return (
