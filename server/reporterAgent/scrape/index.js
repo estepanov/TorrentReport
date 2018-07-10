@@ -10,7 +10,7 @@ const scrape = require('./scrape');
  */
 const scrapeSite = (siteObj) => {
   const newSiteObj = Object.assign({}, siteObj);
-  return sequentialPromise(siteObj.groups, scrape)
+  return sequentialPromise(siteObj.groups, scrape, 5000)
     .then((groupScraped) => {
       newSiteObj.groups = groupScraped;
       RALogger.verbose(`++++created ${newSiteObj.groups.length} groups`);

@@ -81,7 +81,7 @@ const DetailValue = styled.div`
 const InfoListItem = ({
   listingName, listingId, seed, leech, uploader, groupsArr, uploadDate,
 }) => {
-  const uploadedDateFormat = 'MM/DD/YYYY';
+  // const uploadedDateFormat = 'MM/DD/YYYY';
   const groups = [];
   const seenGroups = new Set();
   const sites = [];
