@@ -14,7 +14,7 @@ const TorrentSite = db.define('torrentSite', {
   },
   url: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: true,
   },
 });
 

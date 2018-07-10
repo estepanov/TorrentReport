@@ -17,3 +17,15 @@ router.get('/', (req, res, next) => {
     next();
   }
 });
+
+router.get('/deleteMyAccount', (req, res, next) => {
+  if (req.user) {
+    User.destroy({
+      where: { id: req.user.id },
+    })
+      .then(user => res.json('success'))
+      .catch(next);
+  } else {
+    next();
+  }
+});

@@ -1,8 +1,15 @@
 import React from 'react';
-import moment from 'moment';
-import Loader from '../loader';
+import styled from 'styled-components';
+import themeColors from '../../theme/colors';
+import { ResponsiveContainer, PieChart, Pie, Sector, Cell, LabelList } from 'recharts';
 
-import { PieChart, Pie, Sector, Cell, LabelList } from 'recharts';
+const ConstrainResponsiveContainer = styled.div`
+  max-width: 260px;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+`;
 
 class SeedLeechPie extends React.Component {
   constructor(props) {
@@ -18,7 +25,7 @@ class SeedLeechPie extends React.Component {
       { name: 'seeders', value: this.props.seed },
       { name: 'leechers', value: this.props.leech },
     ];
-    const COLORS = { seeders: '#008000', leechers: '#ff0000' };
+    const COLORS = { seeders: themeColors.seed, leechers: themeColors.leech };
 
     const renderCustomizedLabel = ({
       cx,
@@ -33,9 +40,9 @@ class SeedLeechPie extends React.Component {
       index,
     }) => {
       const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-      const x = cx + radius * Math.cos(-midAngle * RADIAN) * 1.3;
+      const x = cx + radius * Math.cos(-midAngle * RADIAN) * 1.4;
       const x2 = cx + radius * Math.cos(-midAngle * RADIAN);
-      const y = cy + radius * Math.sin(-midAngle * RADIAN) * 1.3;
+      const y = cy + radius * Math.sin(-midAngle * RADIAN) * 1.4;
       const y2 = y - 15;
 
       return (
@@ -44,6 +51,7 @@ class SeedLeechPie extends React.Component {
             x={x}
             y={y}
             fill={fill}
+            fontSize={'12px'}
             textAnchor={x > cx ? 'start' : 'end'}
             dominantBaseline="central"
           >
@@ -53,6 +61,8 @@ class SeedLeechPie extends React.Component {
             x={x}
             y={y2}
             fill={fill}
+            fontWeight={700}
+            fontSize={'13px'}
             textAnchor={x > cx ? 'start' : 'end'}
             dominantBaseline="central"
           >
@@ -64,26 +74,30 @@ class SeedLeechPie extends React.Component {
 
     const RADIAN = Math.PI / 180;
     return (
-      <PieChart width={320} height={130}>
-        <Pie
-          data={data}
-          dataKey="value"
-          nameKey="name"
-          cx={150}
-          cy={120}
-          startAngle={180}
-          endAngle={0}
-          innerRadius={50}
-          outerRadius={70}
-          paddingAngle={5}
-          label={renderCustomizedLabel}
-          isAnimationActive={false}
-        >
-          {data.map((entry, index) => (
-            <Cell key={index} strokeWidth={0} fill={COLORS[entry.name]} />
-          ))}
-        </Pie>
-      </PieChart>
+      <ConstrainResponsiveContainer>
+        <ResponsiveContainer height={130}>
+          <PieChart>
+            <Pie
+              data={data}
+              dataKey="value"
+              nameKey="name"
+              cx={120}
+              cy={100}
+              startAngle={180}
+              endAngle={0}
+              innerRadius={40}
+              outerRadius={50}
+              paddingAngle={5}
+              label={renderCustomizedLabel}
+              isAnimationActive={false}
+            >
+              {data.map((entry, index) => (
+                <Cell key={index} strokeWidth={0} fill={COLORS[entry.name]} />
+              ))}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+      </ConstrainResponsiveContainer>
     );
   }
 }

@@ -15,9 +15,9 @@ const data = [
       'No. We only list the information that find from other sources. We never download or upload any of the actual content of the torrents.',
   },
   {
-    question: 'Is this not illegal?',
+    question: 'Is this illegal?',
     answer:
-      'No. Again since we do not share any of the actual files with users nor distrubite or link to it, we believe nothing here is illegal. This is no different than Google indexing websites.',
+      'No. Since we do **not** possess or share any of the listed files with users, do **not** distrubite or link to it, we believe nothing here is illegal. This is no different than Google indexing websites.',
   },
 ];
 // {

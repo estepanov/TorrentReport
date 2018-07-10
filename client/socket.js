@@ -4,7 +4,7 @@ import store, { setOnlineUsers } from './store';
 const socket = io(window.location.origin); // eslint-disable-line
 
 socket.on('connect', () => {
-  console.log('Connected!');
+  // console.log('Connected!');
 });
 
 socket.on('message', (data) => {

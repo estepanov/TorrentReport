@@ -42,8 +42,8 @@ router.post('/signup', (req, res, next) => {
   User.create(sanitizedBody)
     .then((user) => {
       const objectToSend = cleanUser(user);
-      res.send(objectToSend);
-      // req.login(user, err => (err ? next(err) : res.json(cleanUser(user))));
+      // res.send(objectToSend);
+      req.login(user, err => (err ? next(err) : res.json(cleanUser(user))));
     })
     .catch((err) => {
       if (err.name === 'SequelizeUniqueConstraintError') {

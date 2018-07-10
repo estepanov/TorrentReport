@@ -35,6 +35,10 @@ const browserResolutions = [
   },
 ];
 
+/**
+ * Returns a random screen resolution object
+ * containing {width, height}.
+ */
 const randomResolution = () => {
   const max = browserResolutions.length - 1;
   return browserResolutions[randomNumber(0, max)];
@@ -50,6 +54,9 @@ const browserAgents = [
   'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.162 Safari/537.36',
 ];
 
+/**
+ * Returns a random user agent string.
+ */
 const randomAgent = () => {
   const max = browserAgents.length - 1;
   return browserAgents[randomNumber(0, max)];

@@ -144,10 +144,8 @@ const resultCleaner = (rawResult) => {
         break;
       }
       case 'uploaded': {
-        // RALogger.verbose('------ entering uploaded switch');
         delete newResult.uploaded;
         newResult.uploadDate = new Date(uploadedCleanup(rawResult.uploaded));
-
         break;
       }
       default: {

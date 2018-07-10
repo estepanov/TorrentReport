@@ -8,7 +8,7 @@ const logEmail = (data) => {
 };
 
 const sendError = (title, message) => {
-  const messageObj = errorMessage({ title, message, receiver: 'admin@torrent.report' });
+  const messageObj = errorMessage({ title, message, receiver: process.env.ADMIN_EMAIL });
   return transporter.sendMail(messageObj).then(logEmail);
 };
 

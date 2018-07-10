@@ -1,4 +1,4 @@
-const sender = 'admin@torrent.report';
+const sender = process.env.ADMIN_EMAIL;
 const titleGen = body => `Torrent.Report > ${body}`;
 const bodyHTML = body =>
   `<h1>Torrent.Report</h1><br />

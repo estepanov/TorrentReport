@@ -1,32 +1,96 @@
 import React from 'react';
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip, Line } from 'recharts';
 import moment from 'moment';
-import './styles.scss';
+import styled, { withTheme } from 'styled-components';
+
+const CustomHolder = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  background-color: white;
+  opacity: 0.75;
+  padding: 5px;
+  font-size: 0.8em;
+  border: solid 2px black;
+  border-radius: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 8em;
+  & p,
+  ul,
+  li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+`;
+
+const CustomLabel = styled.div`
+  font-weight: bold;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+`;
+const Describe = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 2px;
+`;
+
+const Row = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  color: ${props => props.fillcolor};
+`;
+
+const Left = styled.div`
+  width: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 5px;
+  font-weight: bold;
+`;
+
+const Right = styled.div`
+  margin-left: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const CustomTooltip = (props) => {
   const { active, payload } = props;
   if (active && payload && payload.length) {
     return (
-      <div className="custom-tooltip">
-        <div className="label">
+      <CustomHolder>
+        <CustomLabel>
           <p>{`${payload[0].payload.date}`}</p>
-        </div>
-        <div className="desc">
-          <div className="row" style={{ color: payload[1].fill }}>
-            <div className="left">{payload[1].dataKey}ers</div>
-            <div className="right">{payload[1].value}</div>
-          </div>
-          <div className="row" style={{ color: payload[0].fill }}>
-            <div className="left">{payload[0].dataKey}ers</div>
-            <div className="right">{payload[0].value}</div>
-          </div>
-        </div>
-      </div>
+        </CustomLabel>
+        <Describe>
+          <Row fillcolor={payload[1].fill}>
+            <Left>{payload[1].dataKey}ers</Left>
+            <Right>{payload[1].value}</Right>
+          </Row>
+          <Row fillcolor={payload[0].fill}>
+            <Left>{payload[0].dataKey}ers</Left>
+            <Right>{payload[0].value}</Right>
+          </Row>
+        </Describe>
+      </CustomHolder>
     );
   }
 
   return null;
 };
+
+const StyledToolTip = withTheme(CustomTooltip);
 
 const SyncLine = (props) => {
   const { syncId, pluck, data } = props;
@@ -80,7 +144,7 @@ const SyncLine = (props) => {
             strokeWidth={2}
           />
         ))}
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip content={<StyledToolTip />} />
       </LineChart>
     </ResponsiveContainer>
   );

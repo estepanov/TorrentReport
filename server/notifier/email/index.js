@@ -1,16 +1,9 @@
 /* eslint-disable global-require import/no-dynamic-require */
 const { logger } = require('../../logging');
 const nodemailer = require('nodemailer');
-const fs = require('fs');
-const path = require('path');
-
-const SECRETS_PATH = path.resolve(__dirname, '../../../secrets.js');
 
 let cred;
-
-if (fs.existsSync(SECRETS_PATH)) {
-  cred = require(SECRETS_PATH).email;
-} else if (
+if (
   !process.env.EMAIL_HOST ||
   !process.env.EMAIL_PORT ||
   !process.env.EMAIL_SEC ||

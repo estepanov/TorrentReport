@@ -35,34 +35,35 @@ export const me = () => dispatch =>
     .then(res => dispatch(getUser(res.data || defaultUser)))
     .catch(err => console.log(err));
 
-export const auth = (email, password, method) => (dispatch) => {
+export const auth = (email, password, method, terms) => (dispatch) => {
   const r = new RegExp(/^[a-z0-9](.?[a-z0-9_-]){0,}@[a-z0-9-]+.([a-z]{1,6}.)?[a-z]{2,6}$/g);
   if (!r.exec(email)) {
-    return dispatch(setError('your email does not look valid'));
+    return dispatch(setError('The email you provided email does not look valid.'));
   }
   if (!method) return dispatch(setError('need a method'));
   if (!email || email.length <= 8) {
-    return dispatch(setError('email needs to be atleast 8 charecters long.'));
+    return dispatch(setError('The email address needs to be atleast 8 charecters long.'));
   }
   if (!password || password.length <= 2) {
-    return dispatch(setError('password needs to be longer.'));
+    return dispatch(setError('Provided password needs to be longer.'));
+  }
+  if (method === 'signup' && !terms) {
+    return dispatch(setError('You can not register unless you have read and accepted all of our terms.'));
   }
   axios
     .post(`/auth/${method}`, { email, password })
     .then(
       (res) => {
-        console.log('post axios here', method, '- email', email, '- password', password);
-        console.log(res);
         switch (method) {
           case 'signup': {
-            dispatch(setSuccess(`You have successfully signed up. We emailed you a link that needs to clicked to activate your account. Check your email: ${
+            dispatch(setSuccess(`You have successfully signed up. We emailed you a link that needs to clicked to activate your account. Noted that our emails are sometimes placed in your spam folder. Check your email: ${
               res.data.email
             } `));
             break;
           }
           case 'login': {
             if (res.data === 'Need to activate account.') {
-              dispatch(setError('You still have not activeated your account.'));
+              dispatch(setError('You have not activated your account yet.'));
             } else {
               dispatch(getUser(res.data));
               history.push('/account');
@@ -87,7 +88,7 @@ export const logout = () => dispatch =>
     .post('/auth/logout')
     .then((_) => {
       dispatch(removeUser());
-      history.push('/login');
+      history.push('/');
     })
     .catch(err => console.log(err));
 

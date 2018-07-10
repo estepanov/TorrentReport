@@ -7,6 +7,10 @@ const initialState = {
   sortOrder: 'top',
   sortBy: 'seed',
   searchString: '',
+  visibility: false,
+  dirty: false,
+  itemsPerPage: 20, // currently fixed number
+  currentPage: 0,
 };
 
 /**
@@ -20,10 +24,21 @@ const ENABLE_ALL_SITES_TOP_FILTER = 'ENABLE_ALL_SITES_TOP_FILTER';
 const ENABLE_ALL_GROUPS_TOP_FILTER = 'ENABLE_ALL_GROUPS_TOP_FILTER';
 const SORT_ORDER_TOP_FILTER = 'SORT_ORDER_TOP_FILTER';
 const SORT_BY_TOP_FILTER = 'SORT_BY_TOP_FILTER';
+const TOGGLE_FILTER_VISIBILITY = 'TOGGLE_FILTER_VISIBILITY';
+const SET_FILTER_VISIBILITY = 'SET_FILTER_VISIBILITY';
+const TOGGLE_DIRTY_STATE = 'TOGGLE_DIRTY_STATE';
+const CHANGE_CURRENT_PAGE = 'CHANGE_CURRENT_PAGE';
 
 /**
  * ACTION CREATORS
  */
+export const changeCurrentPage = page => ({
+  type: CHANGE_CURRENT_PAGE,
+  page,
+});
+export const toggleFilterVisibiility = () => ({ type: TOGGLE_FILTER_VISIBILITY });
+export const setFilterVisibiility = visibility => ({ type: SET_FILTER_VISIBILITY, visibility });
+export const toggleDirtyState = dirtyState => ({ type: TOGGLE_DIRTY_STATE, dirtyState });
 export const addSitesToTopFilter = sitesArr => ({ type: ADD_SITES_TO_TOP_FILTER, sitesArr });
 export const addGroupsToTopFilter = groupsArr => ({ type: ADD_GROUPS_TO_TOP_FILTER, groupsArr });
 export const toggleSiteTopFilter = siteId => ({
@@ -48,17 +63,6 @@ export const sortByTopFilter = sortBy => ({
   type: SORT_BY_TOP_FILTER,
   sortBy,
 });
-
-/**
- * THUNK CREATORS
- */
-
-// export const fetchSites = () => (dispatch) => {
-//   axios.get('/api/torrents/sites/').then((res) => {
-//     if (res.data === null) throw Error('null data');
-//     dispatch(addSites(res.data));
-//   });
-// };
 
 /**
  * REDUCER
@@ -135,6 +139,30 @@ export default (state = initialState, action) => {
       return {
         ...state,
         sortBy: action.sortBy,
+      };
+    }
+    case TOGGLE_FILTER_VISIBILITY: {
+      return {
+        ...state,
+        visibility: !state.visibility,
+      };
+    }
+    case SET_FILTER_VISIBILITY: {
+      return {
+        ...state,
+        visibility: action.visibility,
+      };
+    }
+    case CHANGE_CURRENT_PAGE: {
+      return {
+        ...state,
+        currentPage: action.page,
+      };
+    }
+    case TOGGLE_DIRTY_STATE: {
+      return {
+        ...state,
+        dirty: action.dirtyState,
       };
     }
     default:

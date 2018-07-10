@@ -66,7 +66,7 @@ const setSaltAndPassword = (user) => {
 };
 
 const createAuthToken = (user) => {
-  if (!user.actived) {
+  if (!user.actived && user.password) {
     userAccess
       .create({
         userId: user.id,

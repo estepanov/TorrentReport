@@ -33,7 +33,7 @@ const getOrMakeNestedSite = siteObj =>
         const groupHolder = group;
         return TorrentGroup.findOrCreate({
           where: {
-            // url: group.webPage,
+            url: group.webPage,
             name: group.groupName,
             tag: group.groupTag,
             torrentSiteId: site.siteId,

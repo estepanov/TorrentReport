@@ -6,22 +6,31 @@ import Template from './template';
 import {
   Faq,
   About,
+  AccountHome,
+  Test,
+  NoMatch,
+  ScrollToTop,
+  Privacy,
+  Cookies,
+  Terms,
+  WithTracker,
+} from './components/';
+
+import {
   Login,
   Signup,
   Home,
-  AccountHome,
-  Test,
-  Top,
   Listing,
+  TopCurrent,
   Info,
-  Group,
   Site,
-  NewListings,
-  NoMatch,
+  Group,
   ActivateAccount,
+  DeleteAccount,
+  NewListings,
   ResetPassword,
-  ScrollToTop,
-} from './components/';
+} from './containers';
+
 import { me } from './store';
 
 /**
@@ -40,29 +49,32 @@ class Routes extends Component {
         <ScrollToTop>
           <Template>
             <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/faq" component={Faq} />
-              <Route exact path="/about" component={About} />
-              <Route exact path="/listing/:id" component={Listing} />
-              <Route exact path="/info/:id" component={Info} />
-              <Route exact path="/group/:id" component={Group} />
-              <Route exact path="/site/:id" component={Site} />
-              <Route exact path="/new/listings" component={NewListings} />
-              <Route exact path="/test" component={Test} />
-              <Route exact path="/top" component={Top} />
+              <Route exact path="/" component={WithTracker(Home)} />
+              <Route exact path="/faq" component={WithTracker(Faq)} />
+              <Route exact path="/about" component={WithTracker(About)} />
+              <Route exact path="/listing/:id" component={WithTracker(Listing)} />
+              <Route exact path="/info/:id" component={WithTracker(Info)} />
+              <Route exact path="/group/:id" component={WithTracker(Group)} />
+              <Route exact path="/site/:id" component={WithTracker(Site)} />
+              <Route exact path="/new/listings" component={WithTracker(NewListings)} />
+              <Route exact path="/test" component={WithTracker(Test)} />
+              <Route exact path="/top" component={WithTracker(TopCurrent)} />
+              <Route exact path="/login" component={WithTracker(Login)} />
+              <Route exact path="/signup" component={WithTracker(Signup)} />
+              <Route exact path="/policy/privacy" component={WithTracker(Privacy)} />
+              <Route exact path="/policy/cookies" component={WithTracker(Cookies)} />
+              <Route exact path="/policy/terms-of-service" component={WithTracker(Terms)} />
+              <Route path="/activate/:token" component={WithTracker(ActivateAccount)} />
+              <Route path="/resetpassword/:token" component={WithTracker(ResetPassword)} />
               {isLoggedIn && (
                 <Switch>
                   {/* Routes placed here are only available after logging in */}
-                  <Route path="/account" component={AccountHome} />
+                  <Route exact path="/account" component={WithTracker(AccountHome)} />
+                  <Route exact path="/account/delete" component={WithTracker(DeleteAccount)} />
+                  <Route path="*" component={WithTracker(NoMatch)} status={404} />
                 </Switch>
               )}
-              {/* Routes placed here are available to all visitors */}
-              <Route path="/login" component={Login} />
-              <Route path="/signup" component={Signup} />
-              <Route path="/activate/:token" component={ActivateAccount} />
-              <Route path="/resetpassword/:token" component={ResetPassword} />
-              {/* Displays noMatch component as a fallback */}
-              <Route path="*" component={NoMatch} status={404} />
+              <Route path="*" component={WithTracker(NoMatch)} status={404} />
             </Switch>
           </Template>
         </ScrollToTop>
@@ -89,4 +101,7 @@ const mapDispatch = dispatch => ({
   },
 });
 
-export default connect(mapState, mapDispatch)(Routes);
+export default connect(
+  mapState,
+  mapDispatch,
+)(Routes);

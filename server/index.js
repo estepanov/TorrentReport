@@ -1,4 +1,5 @@
 /* eslint-disable global-require */
+require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
@@ -11,6 +12,7 @@ const passport = require('passport');
 const helmet = require('helmet');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const db = require('./db');
+const redisClient = require('./redis');
 const { logger } = require('./logging');
 
 const sessionStore = new SequelizeStore({
@@ -37,8 +39,6 @@ if (process.env.NODE_ENV !== 'test') {
  * keys as environment variables, so that they can still be read by the
  * Node process on process.env
  */
-
-if (process.env.NODE_ENV === 'development') require('../secrets');
 
 // passport registration
 passport.serializeUser((user, done) => done(null, user.id));
@@ -78,10 +78,10 @@ const createApp = () => {
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET || '2167SQe023713Lhr3KE349ads786asd5s62s9m3ldf3487634',
   };
-  if (app.get('env') === 'production') {
-    app.set('trust proxy', 1);
-    sessionValues.cookie.secure = true;
-  }
+  // if (app.get('env') === 'production') {
+  //   sessionValues.cookie.secure = true;
+  // }
+
   app.use(session(sessionValues));
 
   // passport auth
@@ -139,6 +139,15 @@ const startListening = () => {
   require('./socket')(io);
 };
 
+const redisFlush = () =>
+  redisClient.flushdb((err, succeeded) => {
+    if (succeeded) logger.info('## Redis Server ## + Flushed!');
+    else {
+      logger.error('## Redis Server ## - NOT FLUSHED');
+      logger.error(err);
+    }
+  });
+
 const syncDb = () => db.sync();
 
 // This evaluates as true when this file is run directly from the command line,
@@ -149,6 +158,7 @@ if (require.main === module) {
   sessionStore
     .sync()
     .then(syncDb)
+    .then(redisFlush)
     .then(createApp)
     .then(startListening);
 } else {

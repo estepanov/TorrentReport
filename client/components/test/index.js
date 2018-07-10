@@ -1,24 +1,25 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import {getData} from '../../store';
+import { getData } from '../../store';
 import Loader from '../loader';
+import styled from 'styled-components';
 
-import './style.scss';
+import PageHeader from '../pageHeader';
 
 class Test extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: false
+      data: false,
     };
   }
 
   componentDidMount() {}
 
   render() {
-    return <div>Rendered</div>;
+    return <PageHeader>Rendered</PageHeader>;
   }
 }
 

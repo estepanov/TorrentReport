@@ -23,7 +23,7 @@ function getTiming(duration) {
   return {
     duration,
     easing: 'ease-in',
-    delay: 1000,
+    delay: 0,
     iterations: 1,
     direction: 'normal',
     fill: 'both',

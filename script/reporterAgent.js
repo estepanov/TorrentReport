@@ -1,3 +1,4 @@
+require('dotenv').config();
 const reporterAgent = require('../server/reporterAgent');
 
 const startTime = new Date();

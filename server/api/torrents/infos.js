@@ -1,4 +1,6 @@
 const router = require('express').Router();
+
+const Sequelize = require('sequelize');
 const {
   TorrentSite,
   TorrentInfo,
@@ -7,7 +9,7 @@ const {
   TorrentGroup,
   TorrentCategory,
 } = require('../../db/models');
-const Sequelize = require('sequelize');
+const redis = require('../../redis');
 
 const { Op } = Sequelize;
 
@@ -17,21 +19,27 @@ router.get('/:id', (req, res, next) => {
   // if (req.user && req.user.isAdmin) {
   const id = parseInt(req.params.id, 10);
   if (!Number.isInteger(id)) return res.sendStatus(404);
-  return TorrentInfo.findById(id, {
-    include: [
-      { model: TorrentListing },
-      { as: 'Category', model: TorrentCategory },
-      { model: TorrentSnapshot },
-      {
-        as: 'Group',
-        through: 'InfoGroup',
-        model: TorrentGroup,
-        include: [TorrentSite],
-      },
-    ],
-  })
-    .then(data => res.json(data))
-    .catch(next);
+  redis.get(`api/infos/${id}`, (error, result) => {
+    if (result) return res.json(JSON.parse(result));
+    return TorrentInfo.findById(id, {
+      include: [
+        { model: TorrentListing },
+        { as: 'Category', model: TorrentCategory },
+        { model: TorrentSnapshot },
+        {
+          as: 'Group',
+          through: 'InfoGroup',
+          model: TorrentGroup,
+          include: [TorrentSite],
+        },
+      ],
+    })
+      .then((data) => {
+        redis.setex(`api/infos/${id}`, 180, JSON.stringify(data));
+        return res.json(data);
+      })
+      .catch(next);
+  });
   // } else {
   //   next()
   // }

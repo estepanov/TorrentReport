@@ -2,6 +2,10 @@ const { RALogger } = require('../../logging');
 const filterSkip = require('./filterSkip');
 const _ = require('lodash');
 
+/**
+ * Will remove duplicate snapshots of torrentInfo ids.
+ * @param {Array} snapshotArr Array of snapshots
+ */
 const removeDuplicates = (snapshotArr) => {
   RALogger.verbose('---- removeDuplicates');
   const lookUpObj = {};
@@ -19,6 +23,11 @@ const removeDuplicates = (snapshotArr) => {
   return newSnapshotArr;
 };
 
+/**
+ * Pulls the snapshots from full sites array.
+ * @param {Array} fullSitesArr The array of result full site object.
+ * @param {Integer} statId The statistic id to attach to each snapshot.
+ */
 const fullSitesToSnapshots = (fullSitesArr, statId) => {
   const cleanSitesArr = filterSkip(fullSitesArr);
   RALogger.verbose('---- fullSitesToSnapshots');

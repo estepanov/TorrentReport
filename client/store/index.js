@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension'; // eslint-disable-line
+import config from './config';
 import user from './user';
 import stats from './stats';
 import listings from './listings';
@@ -12,6 +13,7 @@ import topFilter from './topFilter';
 import test from './test';
 
 const reducer = combineReducers({
+  config,
   user,
   test,
   stats,
@@ -27,6 +29,7 @@ const middleware = composeWithDevTools(
 const store = createStore(reducer, middleware);
 
 export default store;
+export * from './config';
 export * from './user';
 export * from './stats';
 export * from './listings';

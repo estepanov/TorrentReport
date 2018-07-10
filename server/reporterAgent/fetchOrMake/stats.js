@@ -51,14 +51,20 @@ const addSnapshots = (snapshotArr) => {
   });
 };
 
+const nextStatId = () =>
+  TorrentStats.max('id')
+    .then(maxId => TorrentStats.findById(maxId))
+    .then((maxStatObj) => {
+      console.log('last stat id:', maxStatObj.id);
+      return Promise.resolve(maxStatObj.id);
+    });
+
 const closeStat = async (fullSites) => {
   /* things done at this point to data:
         - created stat row with active for this scrape
         - created/found site/group/listing/info for each torrent
       */
   const gScrapeCount = await getScrapeCount();
-  const snapshotsArr = fullSitesToSnapshots(fullSites, gScrapeCount);
-  await addSnapshots(snapshotsArr);
   const gSiteCount = await getSiteCount();
   const gGroupCount = await getGroupCount();
   const ginfoCount = await getInfoCount();
@@ -80,13 +86,21 @@ const closeStat = async (fullSites) => {
   };
 
   fullSites.forEach((site) => {
-    statObj.groupLoadCount += site.groups.length;
-    site.groups.forEach((group) => {
-      statObj.torrentLoadCount += group.results.length;
-    });
+    if (Array.isArray(site.groups)) {
+      statObj.groupLoadCount += site.groups.length;
+      site.groups.forEach((group) => {
+        if (Array.isArray(group.results)) {
+          statObj.torrentLoadCount += group.results.length;
+        }
+      });
+    }
   });
   RALogger.verbose('stat OBJ', statObj);
   await setCloseStat(statObj);
+
+  const gNextStatId = await nextStatId();
+  const snapshotsArr = fullSitesToSnapshots(fullSites, gNextStatId);
+  await addSnapshots(snapshotsArr);
   return snapshotsArr;
 };
 

@@ -68,7 +68,11 @@ const getOrMakeTorrentListing = (torrentScrapeObj) => {
         // check if current torrent uplaod user is already in our db.
         if (
           typeof torrentScrapeObj.uploadUser !== 'undefined' &&
+          torrentScrapeObj.uploadUser !== null &&
           torrentScrapeObj.uploadUser !== '' &&
+          typeof info.uploadUser !== 'undefined' &&
+          info.uploadUser !== null &&
+          info.uploadUser !== '' &&
           info.uploadUser.toLowerCase() === torrentScrapeObj.uploadUser.toLowerCase()
         ) {
           foundInfo = info;

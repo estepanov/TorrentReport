@@ -4,7 +4,9 @@ const puppeteer = require('puppeteer');
 const { randomResolution, randomAgent } = require('../utils/randomBrowser');
 
 const pageConsole = (msg) => {
-  console.log('PAGE LOG:', msg.text());
+  if (msg !== 'PAGE LOG: Failed to load resource: net::ERR_FAILED') {
+    console.log('PAGE LOG:', msg.text());
+  }
 };
 
 const minimumArrLength = (smallest, currentVal) => {

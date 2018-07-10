@@ -1,6 +1,5 @@
 import React from 'react';
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Tooltip, Line } from 'recharts';
-import './styles.scss';
 
 export default function SimpleLine(props) {
   const { syncId, pluck, data } = props;

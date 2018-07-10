@@ -1,5 +1,6 @@
 const puppet = require('./puppet');
 const rss = require('./rss');
+const api = require('./api');
 
 const sequentialPromise = require('../utils/sequentialPromise');
 const cleanCheckSave = require('../utils/cleanCheckSave');
@@ -8,6 +9,7 @@ const filterSkip = require('../utils/filterSkip');
 const scrapeSwitchBoard = (siteGroupObj) => {
   console.log(` switchboard webPage - ${siteGroupObj.webPage} - ${siteGroupObj.isRss}`);
   if (siteGroupObj.isRss) return rss(siteGroupObj);
+  if (siteGroupObj.isApi) return api(siteGroupObj);
   return puppet(siteGroupObj);
 };
 
