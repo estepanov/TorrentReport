@@ -32,7 +32,7 @@ const resultCleaner = (rawApiItem) => {
         break;
       }
       case 'date_released_unix': {
-        formattedItem.uploadDate = new Date(rawApiItem.date_released_unix);
+        formattedItem.uploadDate = new Date(rawApiItem.date_released_unix * 1000);
         break;
       }
       default: {
