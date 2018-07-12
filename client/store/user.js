@@ -51,7 +51,7 @@ export const auth = (email, password, method, terms, verify) => (dispatch) => {
     return dispatch(setError('You can not register unless you have read and accepted all of our terms.'));
   }
   // eslint-disable-next-line
-  if (JSON.parse(COINHIVE_ENABLED) && !verify) {
+  if (!verify) {
     return dispatch(setError('You must verify you are a real person.'));
   }
   axios

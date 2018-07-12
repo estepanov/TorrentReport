@@ -10,8 +10,6 @@ const pluginsArr = [
     PRODUCTION: JSON.stringify(isProd),
     BUILD_DATE: JSON.stringify(new Date()),
     GOOGLE_ANALYTICS_ID: JSON.stringify(process.env.GOOGLE_ANALYTICS_ID),
-    COINHIVE_ENABLED: JSON.stringify(process.env.COINHIVE_ENABLED),
-    COINHIVE_SITE_KEY: JSON.stringify(process.env.COINHIVE_SITE_KEY),
   }),
 ];
 

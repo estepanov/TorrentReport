@@ -7,7 +7,6 @@ import { lighten, darken } from 'polished';
 
 import { auth, clearError, clearSuccess } from '../store';
 import AcceptTerms from '../components/acceptTerms';
-import AuthMiner from '../components/authMiner';
 import Notification from '../components/notification';
 
 /**
@@ -120,12 +119,11 @@ const StyledLink = styled.a`
 class AuthForm extends Component {
   constructor(props) {
     super(props);
-    const enabled = COINHIVE_ENABLED === 'true';
     this.state = {
       email: '',
       password: '',
       terms: false,
-      verified: !enabled,
+      verified: true,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
   }
@@ -145,7 +143,7 @@ class AuthForm extends Component {
     this.setState(newObj);
   }
 
-  coinVerify = () => {
+  verifyUser = () => {
     this.setState({ verified: true });
   }
 
@@ -223,8 +221,6 @@ class AuthForm extends Component {
                 toggle={() => this.setState({ terms: !this.state.terms })}
               />
             )}
-
-          {COINHIVE_ENABLED && <AuthMiner callBackFunc={this.coinVerify} />}
 
           {!hideForms && (
             <SubmitButton colorSelected={this.props.colorSelected} type="submit">

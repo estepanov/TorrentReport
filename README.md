@@ -64,11 +64,10 @@ GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 NODE_ENV=development
 SESSION_SECRET=
-COINHIVE_ENABLED=false
-COINHIVE_SITE_KEY=
+
 GOOGLE_ANALYTICS_ID=
 ```
-You can ignore `COINHIVE_SITE_KEY` if you have `COINHIVE_ENABLED` set to `false`. You can also omit `GOOGLE_ANALYTICS_ID` and Google Analytics will not be initialized.
+You can omit `GOOGLE_ANALYTICS_ID` and Google Analytics will not be initialized.
 
 `EMAIL_HOST` is the SMTP domain of your provider.
 
