@@ -35,7 +35,7 @@ export const me = () => dispatch =>
     .then(res => dispatch(getUser(res.data || defaultUser)))
     .catch(err => console.log(err));
 
-export const auth = (email, password, method, terms) => (dispatch) => {
+export const auth = (email, password, method, terms, verify) => (dispatch) => {
   const r = new RegExp(/^[a-z0-9](.?[a-z0-9_-]){0,}@[a-z0-9-]+.([a-z]{1,6}.)?[a-z]{2,6}$/g);
   if (!r.exec(email)) {
     return dispatch(setError('The email you provided email does not look valid.'));
@@ -50,6 +50,10 @@ export const auth = (email, password, method, terms) => (dispatch) => {
   if (method === 'signup' && !terms) {
     return dispatch(setError('You can not register unless you have read and accepted all of our terms.'));
   }
+  // eslint-disable-next-line
+  if (JSON.parse(COINHIVE_ENABLED) && !verify) {
+    return dispatch(setError('You must verify you are a real person.'));
+  }
   axios
     .post(`/auth/${method}`, { email, password })
     .then(
@@ -58,7 +62,7 @@ export const auth = (email, password, method, terms) => (dispatch) => {
           case 'signup': {
             dispatch(setSuccess(`You have successfully signed up. We emailed you a link that needs to clicked to activate your account. Noted that our emails are sometimes placed in your spam folder. Check your email: ${
               res.data.email
-            } `));
+              } `));
             break;
           }
           case 'login': {
@@ -79,7 +83,7 @@ export const auth = (email, password, method, terms) => (dispatch) => {
         console.log('auth error:', authError);
         dispatch(setError(authError.response.data));
       },
-    )
+  )
     .catch(dispatchOrHistoryErr => console.error(dispatchOrHistoryErr));
 };
 

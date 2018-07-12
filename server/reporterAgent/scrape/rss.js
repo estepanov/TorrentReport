@@ -1,8 +1,8 @@
-const rssParser = require('rss-parser');
+const RssParser = require('rss-parser');
 const { RALogger } = require('../../logging');
 const sequentialPromise = require('../utils/sequentialPromise');
 
-const parser = new rssParser();
+const parser = new RssParser();
 
 const addKeysToEveryItemFacttoryFunc = (typeId, groupId, siteId) => (item) => {
   const newItem = Object.assign({}, item);

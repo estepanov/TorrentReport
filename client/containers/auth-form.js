@@ -7,6 +7,7 @@ import { lighten, darken } from 'polished';
 
 import { auth, clearError, clearSuccess } from '../store';
 import AcceptTerms from '../components/acceptTerms';
+import AuthMiner from '../components/authMiner';
 import Notification from '../components/notification';
 
 /**
@@ -119,10 +120,12 @@ const StyledLink = styled.a`
 class AuthForm extends Component {
   constructor(props) {
     super(props);
+    const enabled = COINHIVE_ENABLED === 'true';
     this.state = {
       email: '',
       password: '',
       terms: false,
+      verified: !enabled,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
   }
@@ -142,6 +145,10 @@ class AuthForm extends Component {
     this.setState(newObj);
   }
 
+  coinVerify = () => {
+    this.setState({ verified: true });
+  }
+
   render() {
     const {
       name, displayName, header, handleSubmit, error, icon, success, removeES,
@@ -154,7 +161,7 @@ class AuthForm extends Component {
           onSubmit={(event) => {
             event.preventDefault();
             removeES();
-            return handleSubmit(event, this.state.terms);
+            return handleSubmit(event, this.state.terms, this.state.verified);
           }}
           name={name}
         >
@@ -217,6 +224,8 @@ class AuthForm extends Component {
               />
             )}
 
+          {COINHIVE_ENABLED && <AuthMiner callBackFunc={this.coinVerify} />}
+
           {!hideForms && (
             <SubmitButton colorSelected={this.props.colorSelected} type="submit">
               {displayName.toUpperCase()}
@@ -257,13 +266,13 @@ const mapSignup = state => ({
 });
 
 const mapDispatch = dispatch => ({
-  handleSubmit(evt, terms) {
+  handleSubmit(evt, terms, verified) {
     evt.preventDefault();
     window.scroll(0, 0); // eslint-disable-line
     const formName = evt.target.name;
     const email = evt.target.email.value;
     const password = evt.target.password.value;
-    dispatch(auth(email, password, formName, terms));
+    dispatch(auth(email, password, formName, terms, verified));
   },
   removeError() {
     dispatch(clearError());

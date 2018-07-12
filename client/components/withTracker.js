@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import GoogleAnalytics from 'react-ga';
 
-GoogleAnalytics.initialize('UA-54538481-3');
+GoogleAnalytics.initialize(GOOGLE_ANALYTICS_ID);
 
 const withTracker = (WrappedComponent, options = {}) => {
   const trackPage = (page) => {
     // eslint-disable-next-line
-    if (PRODUCTION) {
+    if (PRODUCTION && GOOGLE_ANALYTICS_ID) {
       GoogleAnalytics.set({
         page,
         ...options,

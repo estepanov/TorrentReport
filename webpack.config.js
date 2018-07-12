@@ -1,12 +1,17 @@
+require('dotenv').config();
 const webpack = require('webpack');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 
+console.log()
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
 const pluginsArr = [
   new webpack.DefinePlugin({
-    PRODUCTION: isProd,
+    PRODUCTION: JSON.stringify(isProd),
     BUILD_DATE: JSON.stringify(new Date()),
+    GOOGLE_ANALYTICS_ID: JSON.stringify(process.env.GOOGLE_ANALYTICS_ID),
+    COINHIVE_ENABLED: JSON.stringify(process.env.COINHIVE_ENABLED),
+    COINHIVE_SITE_KEY: JSON.stringify(process.env.COINHIVE_SITE_KEY),
   }),
 ];
 
