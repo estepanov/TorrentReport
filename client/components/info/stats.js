@@ -3,6 +3,9 @@ import moment from 'moment';
 import styled, { withTheme } from 'styled-components';
 import { lighten } from 'polished';
 
+import SnapshotsNotTracked from './snapshotsNotTracked';
+import noSnapshots from '../../helpers/noSnapshots';
+
 import BasicToolTip from '../tooltip/basic';
 import SectionHeader from '../sectionHeader';
 
@@ -88,6 +91,21 @@ const ValueDate = styled.div`
   color: ${props => lighten(0.55, props.theme.colors.quinary)};
 `;
 
+const FakeItem = styled.div`
+  min-width: 200px;
+  flex-grow: 1;
+  padding: 0.5em;
+  margin: 0.5em;
+  background-color: ${props => lighten(0.98, props.theme.colors.quinary)};
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  font-family: ${props => props.theme.fonts.header};
+`;
+
 /**
  * COMPONENT
  */
@@ -97,6 +115,7 @@ const Stats = (props) => {
   const justFullDateFormat = 'MMMM Do YYYY';
   const justDateFormat = 'MM/DD/YYYY';
   const justTimeFormat = 'h:mm:ss a';
+  const showSnapshots = !noSnapshots(info);
   return (
     <div>
       <SectionHeader>General Info</SectionHeader>
@@ -139,117 +158,130 @@ const Stats = (props) => {
             </Value>
           </Item>
         </InfoColumn>
-        <InfoColumn>
-          <Item>
-            <Title>
-              <div>ratio</div>
-              <BasicToolTip message="The current seed/leech ratio." />
-            </Title>
-            <Value>
-              <ValueNumber>{info.ratio}</ValueNumber>
-            </Value>
-          </Item>
-          <Item>
-            <Title>
-              <div>lowest ratio</div>
-              <BasicToolTip message="The lowest seed/leech ratio and the date when we saw it." />
-            </Title>
-            <Value>
-              <ValueNumberDate>{info.minRatio}</ValueNumberDate>
-              <ValueDate>
-                <div>{moment(info.minRatioDate).format(justDateFormat)}</div>
-                <div>{moment(info.minRatioDate).format(justTimeFormat)}</div>
-              </ValueDate>
-            </Value>
-          </Item>
-          <Item>
-            <Title>
-              <div>highest ratio</div>
-              <BasicToolTip message="The highest seed/leech ratio and the date when we saw it." />
-            </Title>
-            <Value>
-              <ValueNumberDate>{info.maxRatio}</ValueNumberDate>
-              <ValueDate>
-                <div>{moment(info.maxRatioDate).format(justDateFormat)}</div>
-                <div>{moment(info.maxRatioDate).format(justTimeFormat)}</div>
-              </ValueDate>
-            </Value>
-          </Item>
-        </InfoColumn>
-        <InfoColumn>
-          <Item>
-            <Title>
-              <div>current seed</div>
-              <BasicToolTip message="The current amount of users sharing this file." />
-            </Title>
-            <Value>
-              <ValueNumber>{info.seed}</ValueNumber>
-            </Value>
-          </Item>
-          <Item>
-            <Title>
-              <div>lowest seed</div>
-              <BasicToolTip message="The lowest amount of users sharing this file and the date we saw it." />
-            </Title>
-            <Value>
-              <ValueNumberDate>{info.minSeed}</ValueNumberDate>
-              <ValueDate>
-                <div>{moment(info.minSeedDate).format(justDateFormat)}</div>
-                <div>{moment(info.minSeedDate).format(justTimeFormat)}</div>
-              </ValueDate>
-            </Value>
-          </Item>
-          <Item>
-            <Title>
-              <div>highest seed</div>
-              <BasicToolTip message="The highest amount of users sharing this file and the date we saw it." />
-            </Title>
-            <Value>
-              <ValueNumberDate>{info.maxSeed}</ValueNumberDate>
-              <ValueDate>
-                <div>{moment(info.maxSeedDate).format(justDateFormat)}</div>
-                <div>{moment(info.maxSeedDate).format(justTimeFormat)}</div>
-              </ValueDate>
-            </Value>
-          </Item>
-        </InfoColumn>
-        <InfoColumn>
-          <Item>
-            <Title>
-              <div>current leech</div>
-              <BasicToolTip message="The current amount of users downloading this file." />
-            </Title>
-            <Value>
-              <ValueNumber>{info.leech}</ValueNumber>
-            </Value>
-          </Item>
-          <Item>
-            <Title>
-              <div>lowest leech</div>
-              <BasicToolTip message="The lowest amount of users downloading this file and the date we saw it." />
-            </Title>
-            <Value>
-              <ValueNumberDate>{info.minLeech}</ValueNumberDate>
-              <ValueDate>
-                <div>{moment(info.minLeechDate).format(justDateFormat)}</div>
-                <div>{moment(info.minLeechDate).format(justTimeFormat)}</div>
-              </ValueDate>
-            </Value>
-          </Item>
-          <Item>
-            <Title>
-              <div>highest leech</div>
-              <BasicToolTip message="The highest amount of users downloading this file and the date we saw it." />
-            </Title>
-            <Value>
-              <ValueNumberDate>{info.maxLeech}</ValueNumberDate>
-              <ValueDate>
-                <div>{moment(info.maxLeechDate).format(justDateFormat)}</div>
-                <div>{moment(info.maxLeechDate).format(justTimeFormat)}</div>
-              </ValueDate>
-            </Value>
-          </Item>
-        </InfoColumn>
+        {showSnapshots && (
+          <InfoColumn>
+            <Item>
+              <Title>
+                <div>ratio</div>
+                <BasicToolTip message="The current seed/leech ratio." />
+              </Title>
+              <Value>
+                <ValueNumber>{info.ratio}</ValueNumber>
+              </Value>
+            </Item>
+            <Item>
+              <Title>
+                <div>lowest ratio</div>
+                <BasicToolTip message="The lowest seed/leech ratio and the date when we saw it." />
+              </Title>
+              <Value>
+                <ValueNumberDate>{info.minRatio}</ValueNumberDate>
+                <ValueDate>
+                  <div>{moment(info.minRatioDate).format(justDateFormat)}</div>
+                  <div>{moment(info.minRatioDate).format(justTimeFormat)}</div>
+                </ValueDate>
+              </Value>
+            </Item>
+            <Item>
+              <Title>
+                <div>highest ratio</div>
+                <BasicToolTip message="The highest seed/leech ratio and the date when we saw it." />
+              </Title>
+              <Value>
+                <ValueNumberDate>{info.maxRatio}</ValueNumberDate>
+                <ValueDate>
+                  <div>{moment(info.maxRatioDate).format(justDateFormat)}</div>
+                  <div>{moment(info.maxRatioDate).format(justTimeFormat)}</div>
+                </ValueDate>
+              </Value>
+            </Item>
+          </InfoColumn>
+        )}
+        {showSnapshots && (
+          <InfoColumn>
+            <Item>
+              <Title>
+                <div>current seed</div>
+                <BasicToolTip message="The current amount of users sharing this file." />
+              </Title>
+              <Value>
+                <ValueNumber>{info.seed}</ValueNumber>
+              </Value>
+            </Item>
+            <Item>
+              <Title>
+                <div>lowest seed</div>
+                <BasicToolTip message="The lowest amount of users sharing this file and the date we saw it." />
+              </Title>
+              <Value>
+                <ValueNumberDate>{info.minSeed}</ValueNumberDate>
+                <ValueDate>
+                  <div>{moment(info.minSeedDate).format(justDateFormat)}</div>
+                  <div>{moment(info.minSeedDate).format(justTimeFormat)}</div>
+                </ValueDate>
+              </Value>
+            </Item>
+            <Item>
+              <Title>
+                <div>highest seed</div>
+                <BasicToolTip message="The highest amount of users sharing this file and the date we saw it." />
+              </Title>
+              <Value>
+                <ValueNumberDate>{info.maxSeed}</ValueNumberDate>
+                <ValueDate>
+                  <div>{moment(info.maxSeedDate).format(justDateFormat)}</div>
+                  <div>{moment(info.maxSeedDate).format(justTimeFormat)}</div>
+                </ValueDate>
+              </Value>
+            </Item>
+          </InfoColumn>
+        )}
+        {showSnapshots && (
+          <InfoColumn>
+            <Item>
+              <Title>
+                <div>current leech</div>
+                <BasicToolTip message="The current amount of users downloading this file." />
+              </Title>
+              <Value>
+                <ValueNumber>{info.leech}</ValueNumber>
+              </Value>
+            </Item>
+            <Item>
+              <Title>
+                <div>lowest leech</div>
+                <BasicToolTip message="The lowest amount of users downloading this file and the date we saw it." />
+              </Title>
+              <Value>
+                <ValueNumberDate>{info.minLeech}</ValueNumberDate>
+                <ValueDate>
+                  <div>{moment(info.minLeechDate).format(justDateFormat)}</div>
+                  <div>{moment(info.minLeechDate).format(justTimeFormat)}</div>
+                </ValueDate>
+              </Value>
+            </Item>
+            <Item>
+              <Title>
+                <div>highest leech</div>
+                <BasicToolTip message="The highest amount of users downloading this file and the date we saw it." />
+              </Title>
+              <Value>
+                <ValueNumberDate>{info.maxLeech}</ValueNumberDate>
+                <ValueDate>
+                  <div>{moment(info.maxLeechDate).format(justDateFormat)}</div>
+                  <div>{moment(info.maxLeechDate).format(justTimeFormat)}</div>
+                </ValueDate>
+              </Value>
+            </Item>
+          </InfoColumn>
+        )}
+        {!showSnapshots && (
+          <InfoColumn>
+            <FakeItem>
+              <SnapshotsNotTracked center={true} />
+            </FakeItem>
+          </InfoColumn>
+        )}
       </StateContainer>
     </div>
   );

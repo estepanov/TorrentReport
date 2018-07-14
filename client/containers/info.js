@@ -12,6 +12,9 @@ import SnapshotsGraph from '../components/info/snapshotsGraph';
 import SnapshotsList from '../components/info/snapshotsList';
 import Groups from '../components/info/groups';
 
+import noShapshots from '../helpers/noSnapshots';
+import SnapshotsNotTracked from '../components/info/snapshotsNotTracked';
+
 /**
  * STYLES
  */
@@ -33,6 +36,9 @@ const Info = (props) => {
   const listing = props.listings.items[info.torrentListingId] || info.torrentListing;
   if (!info || !listing) return <Loader message="random" />;
 
+  const shouldHide = !noShapshots(info);
+  console.log('info souldHide', shouldHide, info);
+
   const sortedSnapshots = info.torrentSnapshots.slice().sort((lhs, rhs) => {
     const leftDate = new Date(lhs.date);
     const rightDate = new Date(rhs.date);
@@ -48,11 +54,15 @@ const Info = (props) => {
     <div>
       <InfoHeader listing={listing} uploadUser={info.uploadUser} />
       <Stats info={info} />
-      <SectionHeader>Snapshots</SectionHeader>
-      <SnapshotsContainer>
-        <SnapshotsGraph sortedSnapshots={sortedSnapshots} />
-        <SnapshotsList sortedSnapshots={sortedSnapshots} />
-      </SnapshotsContainer>
+      {shouldHide && (
+        <div>
+          <SectionHeader>Snapshots</SectionHeader>
+          <SnapshotsContainer>
+            <SnapshotsGraph sortedSnapshots={sortedSnapshots} />
+            <SnapshotsList sortedSnapshots={sortedSnapshots} />
+          </SnapshotsContainer>
+        </div>
+      )}
       <Groups groups={info.Group} />
     </div>
   );

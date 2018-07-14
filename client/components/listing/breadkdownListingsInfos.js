@@ -3,6 +3,8 @@ import styled, { withTheme } from 'styled-components';
 import { lighten, darken } from 'polished';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import SnapshotsNotTracked from '../info/snapshotsNotTracked';
+import noSnapshots from '../../helpers/noSnapshots';
 import SyncLine from '../charts/syncLine';
 
 import SectionHeader from '../sectionHeader';
@@ -125,114 +127,125 @@ const Chart = styled.div`
 const BreakdownListingsInfos = (props) => {
   const justFullDateFormat = 'MMMM Do YYYY';
   const { infos, aggregateSnapshotCount } = props;
+
   return (
     <div>
       <SectionHeader>uploads by users (select ONE)</SectionHeader>
       <InfoListContainer>
         {infos &&
-          infos.map(info => (
-            <Item to={`/info/${info.id}`} key={info.id}>
-              <Top>
-                <User>
-                  <Value>{info.uploadUser}</Value>
-                  <Descriptor>upload user</Descriptor>
-                </User>
-                <UploadDate>
-                  <Value>{moment(info.uploadDate).format(justFullDateFormat)}</Value>
-                  <Descriptor>upload date</Descriptor>
-                </UploadDate>
-              </Top>
-              <Details>
-                <InfoContainer>
-                  <InfoGroup>
-                    {info.category && (
-                      <InfoItem>
-                        <InfoLabel>listed as</InfoLabel>
-                        <InfoValue>{info.category}</InfoValue>
-                      </InfoItem>
+          infos.map((info) => {
+            const showSnapshots = !noSnapshots(info);
+            return (
+              <Item to={`/info/${info.id}`} key={info.id}>
+                <Top>
+                  <User>
+                    <Value>{info.uploadUser}</Value>
+                    <Descriptor>upload user</Descriptor>
+                  </User>
+                  <UploadDate>
+                    <Value>{moment(info.uploadDate).format(justFullDateFormat)}</Value>
+                    <Descriptor>upload date</Descriptor>
+                  </UploadDate>
+                </Top>
+                <Details>
+                  <InfoContainer>
+                    <InfoGroup>
+                      {info.category && (
+                        <InfoItem>
+                          <InfoLabel>listed as</InfoLabel>
+                          <InfoValue>{info.category}</InfoValue>
+                        </InfoItem>
+                      )}
+                      {info.size && (
+                        <InfoItem>
+                          <InfoLabel>torrent size</InfoLabel>
+                          <InfoValue>{info.size}</InfoValue>
+                        </InfoItem>
+                      )}
+                    </InfoGroup>
+                    {!showSnapshots && <SnapshotsNotTracked />}
+                    {showSnapshots && (
+                      <InfoGroup>
+                        <InfoItem>
+                          <InfoLabel>ratio</InfoLabel>
+                          <InfoValue>{info.ratio}</InfoValue>
+                        </InfoItem>
+                        {info.ratio !== info.maxRatio &&
+                          info.maxRatio !== info.minRatio && (
+                            <div>
+                              <InfoItem>
+                                <InfoLabel>max ratio</InfoLabel>
+                                <InfoValue>{info.maxRatio}</InfoValue>
+                              </InfoItem>
+                              <InfoItem>
+                                <InfoLabel>min ratio</InfoLabel>
+                                <InfoValue>{info.minRatio}</InfoValue>
+                              </InfoItem>
+                            </div>
+                          )}
+                      </InfoGroup>
                     )}
-                    {info.size && (
-                      <InfoItem>
-                        <InfoLabel>torrent size</InfoLabel>
-                        <InfoValue>{info.size}</InfoValue>
-                      </InfoItem>
+                    {showSnapshots && (
+                      <InfoGroup>
+                        <InfoItem>
+                          <InfoLabel>seeders</InfoLabel>
+                          <InfoValue>{info.seed}</InfoValue>
+                        </InfoItem>
+                        {info.seed !== info.maxSeed &&
+                          info.maxSeed !== info.minSeed && (
+                            <div>
+                              <InfoItem>
+                                <InfoLabel>max seeders</InfoLabel>
+                                <InfoValue>{info.maxSeed}</InfoValue>
+                              </InfoItem>
+                              <InfoItem>
+                                <InfoLabel>min seeders</InfoLabel>
+                                <InfoValue>{info.minSeed}</InfoValue>
+                              </InfoItem>
+                            </div>
+                          )}
+                      </InfoGroup>
                     )}
-                  </InfoGroup>
-                  <InfoGroup>
-                    <InfoItem>
-                      <InfoLabel>ratio</InfoLabel>
-                      <InfoValue>{info.ratio}</InfoValue>
-                    </InfoItem>
-                    {info.ratio !== info.maxRatio &&
-                      info.maxRatio !== info.minRatio && (
-                        <div>
-                          <InfoItem>
-                            <InfoLabel>max ratio</InfoLabel>
-                            <InfoValue>{info.maxRatio}</InfoValue>
-                          </InfoItem>
-                          <InfoItem>
-                            <InfoLabel>min ratio</InfoLabel>
-                            <InfoValue>{info.minRatio}</InfoValue>
-                          </InfoItem>
-                        </div>
-                      )}
-                  </InfoGroup>
-                  <InfoGroup>
-                    <InfoItem>
-                      <InfoLabel>seeders</InfoLabel>
-                      <InfoValue>{info.seed}</InfoValue>
-                    </InfoItem>
-                    {info.seed !== info.maxSeed &&
-                      info.maxSeed !== info.minSeed && (
-                        <div>
-                          <InfoItem>
-                            <InfoLabel>max seeders</InfoLabel>
-                            <InfoValue>{info.maxSeed}</InfoValue>
-                          </InfoItem>
-                          <InfoItem>
-                            <InfoLabel>min seeders</InfoLabel>
-                            <InfoValue>{info.minSeed}</InfoValue>
-                          </InfoItem>
-                        </div>
-                      )}
-                  </InfoGroup>
-                  <InfoGroup>
-                    <InfoItem>
-                      <InfoLabel>leechers</InfoLabel>
-                      <InfoValue>{info.leech}</InfoValue>
-                    </InfoItem>
-                    {info.leech !== info.maxLeech &&
-                      info.maxLeech !== info.minLeech && (
-                        <div>
-                          <InfoItem>
-                            <InfoLabel>max leechers</InfoLabel>
-                            <InfoValue>{info.maxLeech}</InfoValue>
-                          </InfoItem>
-                          <InfoItem>
-                            <InfoLabel>min leechers</InfoLabel>
-                            <InfoValue>{info.minLeech}</InfoValue>
-                          </InfoItem>
-                        </div>
-                      )}
-                  </InfoGroup>
-                </InfoContainer>
-                {aggregateSnapshotCount.length > 1 ? (
-                  <Chart>
-                    <SyncLine
-                      syncId="listings"
-                      data={info.torrentSnapshots}
-                      pluck={[
-                        { key: 'seed', color: '#008000' },
-                        { key: 'leech', color: '#ff0000' },
-                      ]}
-                    />
-                  </Chart>
-                ) : (
-                  <div />
-                )}
-              </Details>
-            </Item>
-          ))}
+                    {showSnapshots && (
+                      <InfoGroup>
+                        <InfoItem>
+                          <InfoLabel>leechers</InfoLabel>
+                          <InfoValue>{info.leech}</InfoValue>
+                        </InfoItem>
+                        {info.leech !== info.maxLeech &&
+                          info.maxLeech !== info.minLeech && (
+                            <div>
+                              <InfoItem>
+                                <InfoLabel>max leechers</InfoLabel>
+                                <InfoValue>{info.maxLeech}</InfoValue>
+                              </InfoItem>
+                              <InfoItem>
+                                <InfoLabel>min leechers</InfoLabel>
+                                <InfoValue>{info.minLeech}</InfoValue>
+                              </InfoItem>
+                            </div>
+                          )}
+                      </InfoGroup>
+                    )}
+                  </InfoContainer>
+                  {showSnapshots && aggregateSnapshotCount.length > 1 ? (
+                    <Chart>
+                      <SyncLine
+                        syncId="listings"
+                        data={info.torrentSnapshots}
+                        pluck={[
+                          { key: 'seed', color: '#008000' },
+                          { key: 'leech', color: '#ff0000' },
+                        ]}
+                      />
+                    </Chart>
+                  ) : (
+                    <div />
+                  )}
+                </Details>
+              </Item>
+            );
+          })}
       </InfoListContainer>
     </div>
   );
