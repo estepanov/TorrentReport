@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 const NotTrackedMessage = styled.div`
   width: 100%;
-  color: grey;
   font-style: italic;
   display: flex;
   height: 100%;
