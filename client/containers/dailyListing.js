@@ -8,6 +8,7 @@ import { lighten, darken } from 'polished';
 import Loader from '../components/loader';
 import { fetchDailyListings } from '../store';
 import MiniListItem from '../components/dailyListing/miniListItem';
+import CenterFill from '../components/messages/centerFill';
 
 /**
  * STYLEs
@@ -179,34 +180,38 @@ class DailyListing extends Component {
         </TopBar>
         {this.props.dailyListings.days1.status === 'loaded' &&
           !listings.length && (
-            <div>
-              <i>no new items</i>
-            </div>
+            <CenterFill
+              lighten={true}
+              amount={0.1}
+              themeColor="primary"
+              message="We did not find any new torrents."
+            />
           )}
-        {this.props.dailyListings.days1.status === 'loaded' &&
-          listings.length && (
-            <ItemsContainer>
-              {finalSize.map((item, index) => (
-                <MiniListItem key={item.id} active={this.state.filter} index={index} item={item} />
-              ))}
-            </ItemsContainer>
-          )}
-        {this.props.dailyListings.days1.status === 'loaded' &&
-          listings.length && (
-            <Footer>
-              <MoreLink to="/new/listings">View {hiddenResults} more results</MoreLink>
-              <Options>
-                <Current>
-                  sorted by {this.state.order} {this.state.filter}ers
-                </Current>
-                <Try>
-                  switch to{' '}
-                  <TryLink onClick={this.toggleFilter}>{this.oppositeFilter()}ers</TryLink> or{' '}
-                  <TryLink onClick={this.toggleOrder}>{this.oppositeOrder()}</TryLink>
-                </Try>
-              </Options>
-            </Footer>
-          )}
+        {this.props.dailyListings.days1.status === 'loaded' && listings.length ? (
+          <ItemsContainer>
+            {finalSize.map((item, index) => (
+              <MiniListItem key={item.id} active={this.state.filter} index={index} item={item} />
+            ))}
+          </ItemsContainer>
+        ) : (
+          ''
+        )}
+        {this.props.dailyListings.days1.status === 'loaded' && listings.length ? (
+          <Footer>
+            <MoreLink to="/new/listings">View {hiddenResults} more results</MoreLink>
+            <Options>
+              <Current>
+                sorted by {this.state.order} {this.state.filter}ers
+              </Current>
+              <Try>
+                switch to <TryLink onClick={this.toggleFilter}>{this.oppositeFilter()}ers</TryLink>{' '}
+                or <TryLink onClick={this.toggleOrder}>{this.oppositeOrder()}</TryLink>
+              </Try>
+            </Options>
+          </Footer>
+        ) : (
+          ''
+        )}
       </DailyListingComponent>
     );
   }

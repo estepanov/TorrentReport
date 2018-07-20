@@ -3,7 +3,7 @@ import styled, { withTheme } from 'styled-components';
 import { lighten, darken } from 'polished';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import SnapshotsNotTracked from '../info/snapshotsNotTracked';
+import CenterFill from '../messages/centerFill';
 import noSnapshots from '../../helpers/noSnapshots';
 import SyncLine from '../charts/syncLine';
 
@@ -65,7 +65,7 @@ const User = styled.div`
 `;
 const Value = styled.div`
   font-size: 1.4em;
-  color: ${props => darken(0.4, props.theme.colors.secondary)};
+  color: ${props => darken(0.2, props.theme.colors.secondary)};
 `;
 const Descriptor = styled.div`
   color: ${props => lighten(0.15, props.theme.colors.secondary)};
@@ -163,7 +163,15 @@ const BreakdownListingsInfos = (props) => {
                         </InfoItem>
                       )}
                     </InfoGroup>
-                    {!showSnapshots && <SnapshotsNotTracked />}
+                    {!showSnapshots && (
+                      <CenterFill
+                        darken={true}
+                        amount={0.2}
+                        justifyContent="start"
+                        themeColor="secondary"
+                        message="This torrent's downloads are not tracked."
+                      />
+                    )}
                     {showSnapshots && (
                       <InfoGroup>
                         <InfoItem>
@@ -171,7 +179,7 @@ const BreakdownListingsInfos = (props) => {
                           <InfoValue>{info.ratio}</InfoValue>
                         </InfoItem>
                         {info.ratio !== info.maxRatio &&
-                          info.maxRatio !== info.minRatio && (
+                          info.ratio !== info.minRatio && (
                             <div>
                               <InfoItem>
                                 <InfoLabel>max ratio</InfoLabel>
@@ -192,7 +200,7 @@ const BreakdownListingsInfos = (props) => {
                           <InfoValue>{info.seed}</InfoValue>
                         </InfoItem>
                         {info.seed !== info.maxSeed &&
-                          info.maxSeed !== info.minSeed && (
+                          info.seed !== info.minSeed && (
                             <div>
                               <InfoItem>
                                 <InfoLabel>max seeders</InfoLabel>
@@ -213,7 +221,7 @@ const BreakdownListingsInfos = (props) => {
                           <InfoValue>{info.leech}</InfoValue>
                         </InfoItem>
                         {info.leech !== info.maxLeech &&
-                          info.maxLeech !== info.minLeech && (
+                          info.leech !== info.minLeech && (
                             <div>
                               <InfoItem>
                                 <InfoLabel>max leechers</InfoLabel>

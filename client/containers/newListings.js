@@ -12,6 +12,7 @@ import Loader from '../components/loader';
 import { fetchDailyListings } from '../store';
 import ListItem from '../components/newListings/listItem';
 import PageButtonMaker from '../components/pagination/pageButtonMaker';
+import CenterFill from '../components/messages/centerFill';
 
 /**
  * STYLES
@@ -200,14 +201,20 @@ class NewListings extends Component {
       <NewListingsContainer>
         <TopRow>
           <PageHeader>NEWLY LISTED TORRENTS</PageHeader>
-          <TitleSide>
-            <SearchInput
-              placeholder="search these listings..."
-              id="nl-search"
-              name="nl-search"
-              onChange={this.searchChange}
-            />
-          </TitleSide>
+          {this.props.dailyListings.days1.status === 'loaded' &&
+          currentPageArr.length === 0 &&
+          !this.state.search ? (
+            ''
+          ) : (
+            <TitleSide>
+              <SearchInput
+                placeholder="search these listings..."
+                id="nl-search"
+                name="nl-search"
+                onChange={this.searchChange}
+              />
+            </TitleSide>
+          )}
         </TopRow>
         {this.state.searching && (
           <NowSearching>{`currently searching for ${this.state.search}`}</NowSearching>
@@ -216,9 +223,19 @@ class NewListings extends Component {
           currentPageArr.length === 0 && (
             <NoResultContainer>
               {!this.state.search ? (
-                <div>No new items</div>
+                <CenterFill
+                  lighten={true}
+                  amount={0.6}
+                  themeColor="quinary"
+                  message="We do not have new torrents."
+                />
               ) : (
-                <div>No search results for: {this.state.search}.</div>
+                <CenterFill
+                  lighten={true}
+                  amount={0.6}
+                  themeColor="quinary"
+                  message={`No search results found for: ${this.state.search}.`}
+                />
               )}
             </NoResultContainer>
           )}

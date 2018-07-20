@@ -3,7 +3,7 @@ import moment from 'moment';
 import styled, { withTheme } from 'styled-components';
 import { lighten } from 'polished';
 
-import SnapshotsNotTracked from './snapshotsNotTracked';
+import CenterFill from '../messages/centerFill';
 import noSnapshots from '../../helpers/noSnapshots';
 
 import BasicToolTip from '../tooltip/basic';
@@ -278,7 +278,12 @@ const Stats = (props) => {
         {!showSnapshots && (
           <InfoColumn>
             <FakeItem>
-              <SnapshotsNotTracked center={true} />
+              <CenterFill
+                lighten={true}
+                amount={0.6}
+                themeColor="quinary"
+                message="This torrent's downloads are not tracked."
+              />
             </FakeItem>
           </InfoColumn>
         )}
