@@ -24,7 +24,7 @@
     "test-server": "NODE_ENV='test' DATABASE_URL='postgres://root:root@localhost:5432/TorrentReport-test' mocha ./server/**/*.spec.js ./server/**/**/*.spec.js ./client/**/*.spec.js --require babel-register",
     "snyk-protect": "snyk protect",
     "snyk-test": "snyk test",
-    "prepare": "npm run snyk-protect",
+    "prepare": "yarn run snyk-protect",
     "prepublish": "npm run snyk-protect"
   },
   "author": "",
@@ -81,7 +81,7 @@
     "redux-thunk": "^2.2.0",
     "rss-parser": "^3.1.2",
     "sequelize": "^4.37.5",
-    "snyk": "^1.71.0",
+    "snyk": "^1.319.0",
     "socket.io": "^2.1.0",
     "styled-components": "^3.3.2",
     "web-animations-js": "^2.3.1",
