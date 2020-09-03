@@ -64,7 +64,7 @@
     "pg-hstore": "^2.3.2",
     "pg-native": "^2.2.0",
     "polished": "^1.9.2",
-    "puppeteer": "^1.2.0",
+    "puppeteer": "^1.13.0",
     "react": "^16.3.0",
     "react-cookie": "^2.1.6",
     "react-dom": "^16.3.0",
