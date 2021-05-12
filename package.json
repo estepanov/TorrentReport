@@ -57,7 +57,7 @@
     "magnet-uri": "^5.1.7",
     "moment": "^2.21.0",
     "morgan": "^1.9.0",
-    "nodemailer": "^4.6.3",
+    "nodemailer": "^6.4.16",
     "passport": "^0.4.0",
     "passport-google-oauth": "^1.0.0",
     "pg": "^6.4.2",
